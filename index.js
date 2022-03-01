@@ -1,2 +1,2 @@
-import {f} from './lib.js'
-f()
+import {createHisoryButton,getBrowserInfo,setUrlHashParameter,setUrlParameter} from './lib.js'
+createHisoryButton();
