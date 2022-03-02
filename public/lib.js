@@ -1,6 +1,6 @@
 window.onresize = function () {
-    WIDTH = window.innerWidth
-    HEIGHT = window.innerHeight
+    const WIDTH = window.innerWidth
+    const HEIGHT = window.innerHeight
     console.log(`Current window size is ${WIDTH}x${HEIGHT}`)
 }
 
@@ -15,10 +15,10 @@ export const setUrlHashParameter = (key, value) => {
     const hashArr = url.hash.split('')
     const assignUrlFromArray = (url, arr) => {
         url.hash = arr.join('')
-        document.location.assign(url.toString())  
+        document.location.assign(url.toString())
     }
     if (!url.hash) {
-        assignUrlFromArray(url,[`${key}=${value}`])
+        assignUrlFromArray(url, [`${key}=${value}`])
         return
     }
     const keyIndex = hashArr.findIndex((elem) => elem === key)
@@ -28,27 +28,27 @@ export const setUrlHashParameter = (key, value) => {
         return
     }
 
-    const lastValueIndex = hashArr.indexOf("&", keyIndex);
+    const lastValueIndex = hashArr.indexOf('&', keyIndex)
     if (lastValueIndex === -1) {
         hashArr.splice(keyIndex, hashArr.length, `&${key}=${value}`)
     } else {
         hashArr.splice(keyIndex, lastValueIndex - keyIndex, `&${key}=${value}`)
-    }  
+    }
     assignUrlFromArray(url, hashArr)
     return
 }
 
-export const createHisoryButtons = () => {
+export const createHistoryButtons = () => {
     const historyButtonCreate = (name, goIndex) => {
         const button = document.createElement('button')
         button.appendChild(document.createTextNode(`${name}`))
         button.onclick = () => history.go(goIndex)
         const firstDiv = document.querySelector('.my-div')
         firstDiv.appendChild(button)
-    } 
+    }
 
-    historyButtonCreate("forward", 1)
-    historyButtonCreate("back", -1)
+    historyButtonCreate('forward', 1)
+    historyButtonCreate('back', -1)
 }
 
 export const getBrowserInfo = () => {
