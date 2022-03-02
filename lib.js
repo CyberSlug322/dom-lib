@@ -12,19 +12,43 @@ export const setUrlParameter = (key, value) => {
 
 export const setUrlHashParameter = (key, value) => {
     const url = new URL(document.location.href)
-    url.hash
+    const hashArr = url.hash.split('')
+    const assignUrlFromArray = (url, arr) => {
+        url.hash = arr.join('')
+        document.location.assign(url.toString())  
+    }
+    if (!url.hash) {
+        assignUrlFromArray(url,[`${key}=${value}`])
+        return
+    }
+    const keyIndex = hashArr.findIndex((elem) => elem === key)
+    if (keyIndex === -1) {
+        hashArr.splice(hashArr.length, 0, `&${key}=${value}`)
+        assignUrlFromArray(url, hashArr)
+        return
+    }
+
+    const lastValueIndex = hashArr.indexOf("&", keyIndex);
+    if (lastValueIndex === -1) {
+        hashArr.splice(keyIndex, hashArr.length, `&${key}=${value}`)
+    } else {
+        hashArr.splice(keyIndex, lastValueIndex - keyIndex, `&${key}=${value}`)
+    }  
+    assignUrlFromArray(url, hashArr)
+    return
 }
 
-export const createHisoryButton = () => {
-    const backButton = document.createElement('button')
-    const forwardButton = document.createElement('button')
-    backButton.appendChild(document.createTextNode('Back'))
-    forwardButton.appendChild(document.createTextNode('Forward'))
-    backButton.onclick = () => history.go(-1)
-    forwardButton.onclick = () => history.go(1)
-    const firstDiv = document.querySelector('.my-div')
-    firstDiv.appendChild(backButton)
-    firstDiv.appendChild(forwardButton)
+export const createHisoryButtons = () => {
+    const historyButtonCreate = (name, goIndex) => {
+        const button = document.createElement('button')
+        button.appendChild(document.createTextNode(`${name}`))
+        button.onclick = () => history.go(goIndex)
+        const firstDiv = document.querySelector('.my-div')
+        firstDiv.appendChild(button)
+    } 
+
+    historyButtonCreate("forward", 1)
+    historyButtonCreate("back", -1)
 }
 
 export const getBrowserInfo = () => {
