@@ -13,26 +13,30 @@ export const setUrlParameter = (key, value) => {
 export const setUrlHashParameter = (key, value) => {
     const url = new URL(document.location.href)
     const hashArr = url.hash.split('')
+    const separator = hashArr[1] === key ? '' : '&'
+    const checkHashOverwrite = (key, arr) => {
+        if (!arr.length) return true
+        if (arr.includes(key) && !arr.includes('&')) return true
+        return false
+    }
     const assignUrlFromArray = (url, arr) => {
         url.hash = arr.join('')
         document.location.assign(url.toString())
     }
-    if (!url.hash) {
+    if (checkHashOverwrite(key, hashArr)) {
         assignUrlFromArray(url, [`${key}=${value}`])
         return
     }
     const keyIndex = hashArr.findIndex((elem) => elem === key)
     if (keyIndex === -1) {
         hashArr.splice(hashArr.length, 0, `&${key}=${value}`)
-        assignUrlFromArray(url, hashArr)
-        return
-    }
-
-    const lastValueIndex = hashArr.indexOf('&', keyIndex)
-    if (lastValueIndex === -1) {
-        hashArr.splice(keyIndex, hashArr.length, `&${key}=${value}`)
     } else {
-        hashArr.splice(keyIndex, lastValueIndex - keyIndex, `&${key}=${value}`)
+        const lastValueIndex = hashArr.indexOf('&', keyIndex)
+        const cutCount =
+            lastValueIndex === -1
+                ? hashArr.length
+                : lastValueIndex - keyIndex + 1
+        hashArr.splice(keyIndex - 1, cutCount, `${separator}${key}=${value}`)
     }
     assignUrlFromArray(url, hashArr)
     return
