@@ -14,7 +14,7 @@ export const setUrlHashParameter = (key, value) => {
     const url = new URL(document.location.href)
     const hashArr = url.hash.split('')
     const separator = hashArr[1] === key ? '' : '&'
-    const checkHashOverwrite = (key, arr) => {
+    const checkHashOverwrite = (arr, key) => {
         if (!arr.length) return true
         if (arr.includes(key) && !arr.includes('&')) return true
         return false
@@ -23,23 +23,34 @@ export const setUrlHashParameter = (key, value) => {
         url.hash = arr.join('')
         document.location.assign(url.toString())
     }
-    if (checkHashOverwrite(key, hashArr)) {
-        assignUrlFromArray(url, [`${key}=${value}`])
-        return
+
+    const injectValue = (hashArr, embededValue = `${key}=${value}`) => {     
+        hashArr.splice(hashArr.length, 0, embededValue)
+        return hashArr
     }
-    const keyIndex = hashArr.findIndex(elem => elem === key)
-    if (keyIndex === -1) {
-        hashArr.splice(hashArr.length, 0, `&${key}=${value}`)
-    } else {
+
+    const rewriteValue = (hashArr, keyIndex, embededValue = `${separator}${key}=${value}`) => {
         const lastValueIndex = hashArr.indexOf('&', keyIndex)
         const cutCount =
             lastValueIndex === -1
                 ? hashArr.length
                 : lastValueIndex - keyIndex + 1
-        hashArr.splice(keyIndex - 1, cutCount, `${separator}${key}=${value}`)
+        hashArr.splice(keyIndex - 1, cutCount, embededValue)
+        return hashArr
     }
+
+    if (checkHashOverwrite(hashArr, key)) {
+        assignUrlFromArray(url, [`${key}=${value}`])
+        return
+    }
+    const keyIndex = hashArr.findIndex(elem => elem === key)
+    if (keyIndex === -1) {
+        hashArr = injectValue(hashArr)
+    } else {
+        hashArr = rewriteValue(hashArr, keyIndex, embededValue)
+    }
+
     assignUrlFromArray(url, hashArr)
-    return
 }
 
 export const injectHistoryButtons = (injectionPointName = '.my-div') => {
