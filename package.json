@@ -1,17 +1,22 @@
 {
-  "name": "dom-lib",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "type": "module",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "prettier": "2.5.1"
-  },
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.17.3"
-  }
+    "name": "dom-lib",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "format": "prettier-standard --format",
+        "format:check": "prettier-standard --check"
+    },
+    "type": "module",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "prettier": "2.5.1"
+    },
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.17.3",
+        "prettier-standard": "^16.4.1"
+    }
 }

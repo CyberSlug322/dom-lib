@@ -27,7 +27,7 @@ export const setUrlHashParameter = (key, value) => {
         assignUrlFromArray(url, [`${key}=${value}`])
         return
     }
-    const keyIndex = hashArr.findIndex((elem) => elem === key)
+    const keyIndex = hashArr.findIndex(elem => elem === key)
     if (keyIndex === -1) {
         hashArr.splice(hashArr.length, 0, `&${key}=${value}`)
     } else {
@@ -42,17 +42,25 @@ export const setUrlHashParameter = (key, value) => {
     return
 }
 
-export const createHistoryButtons = () => {
-    const historyButtonCreate = (name, goIndex) => {
+export const injectHistoryButtons = (injectionPointName = '.my-div') => {
+
+    const createHistoryButton = (name, goIndex) => {
         const button = document.createElement('button')
         button.appendChild(document.createTextNode(`${name}`))
         button.onclick = () => history.go(goIndex)
-        const firstDiv = document.querySelector('.my-div')
-        firstDiv.appendChild(button)
+        return button
     }
 
-    historyButtonCreate('forward', 1)
-    historyButtonCreate('back', -1)
+    const injectButton = (injectionPointName, button) => {
+        const injectionElement = document.querySelector(injectionPointName)
+        console.log(injectionPointName)
+        injectionElement.appendChild(button)
+    }
+
+    const forwardButton = createHistoryButton('forward', 1)
+    const backButton = createHistoryButton('back', -1)
+    injectButton(injectionPointName, forwardButton)
+    injectButton(injectionPointName, backButton)
 }
 
 export const getBrowserInfo = () => {
