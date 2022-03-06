@@ -1,7 +1,9 @@
-window.onresize = function () {
-    const WIDTH = window.innerWidth
-    const HEIGHT = window.innerHeight
-    console.log(`Current window size is ${WIDTH}x${HEIGHT}`)
+function printSize(width, height){
+    console.log(`Current size is ${width}x${height}`)
+}
+
+export const initWindowSizePrinter = () => {
+    window.onresize = () => printSize(window.innerWidth, window.innerHeight)
 }
 
 export const setUrlParameter = (key, value) => {
