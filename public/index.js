@@ -3,7 +3,9 @@ import {
     getBrowserInfo,
     setUrlHashParameter,
     setUrlParameter,
+    initWindowSizePrinter
 } from './lib.js'
+initWindowSizePrinter()
 injectHistoryButtons()
 getBrowserInfo()
 setUrlHashParameter('x', 1000)
